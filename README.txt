@@ -1,4 +1,4 @@
-This folder contains:
+This repository contains:
 
 ## 1 ##
 get_reference_seq.sh (Selecting reference rDNA and background sequences):
