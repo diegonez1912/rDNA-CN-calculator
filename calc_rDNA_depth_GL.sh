@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
-#SBATCH --account=CancerEvolution
+#SBATCH --account=
 #SBATCH --time=50:00:00
 #SBATCH --mem=32g
 #SBATCH --cpus-per-task=26
 
 
 # Load conda environment
-set -euo pipefail
-source /home/diegoonez/miniforge3/etc/profile.d/conda.sh
-conda activate rdna_env
 
 THREADS=8 # $SLURM_CPUS_PER_TASK
 
