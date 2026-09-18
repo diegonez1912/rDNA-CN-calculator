@@ -6,8 +6,9 @@
 
 # Load conda environment
 
+# Create a directory to store reference files (e.g. FASTA, GFF, BED) that will be used for mapping and analysis
 host_dir=
-mkdir -p ${host_dir}/ref # Create a directory to store reference files (e.g. FASTA, GFF, BED) that will be used for mapping and analysis
+mkdir -p ${host_dir}/ref
 
 
 #########################################################################
