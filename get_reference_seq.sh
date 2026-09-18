@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
-#SBATCH --account=CancerEvolution
+#SBATCH --account=
 #SBATCH --time=12:00:00
 #SBATCH --mem=64g
 #SBATCH --cpus-per-task=16
 
 # Load conda environment
-set -euo pipefail
-source /home/diegoonez/miniforge3/etc/profile.d/conda.sh
-conda activate rdna_env
 
-host_dir=/faststorage/project/CancerEvolution_shared/Projects/Diego
+host_dir=
 mkdir -p ${host_dir}/ref # Create a directory to store reference files (e.g. FASTA, GFF, BED) that will be used for mapping and analysis
 
 
