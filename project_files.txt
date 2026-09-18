@@ -1,8 +1,3 @@
-TCGA_BLCA run from: /project/CancerEvolution/Datasets/TCGA_WGS/elias_bam_BLCA/data/full/*.bam & /project/CancerEvolution/Datasets/TCGA_WGS/elias_bam_BLCA/data/test/*.bam
-TCGA-OV run from: /project/CancerEvolution/Datasets/TCGA_WGS/randiip/data/TCGA-OV/*.bam
-TCGA-GBM run from: /project/CancerEvolution/Datasets/TCGA_WGS/Chongming_10pjs/data/TCGA-GBM/*.bam
-TCGA-PAAD run from: /project/CancerEvolution/Datasets/TCGA_WGS/Chongming_10pjs/data/TCGA-PAAD/*.bam
-TCGA-PRAD run from: /project/CancerEvolution/Datasets/TCGA_WGS/Chongming_10pjs/data/TCGA-PRAD/*.bam
 
 
 ## BEFORE RUNNING calc_rDNA_depth.sh (BOTH OF THEM) ##
