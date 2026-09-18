@@ -1,0 +1,74 @@
+TCGA_BLCA run from: /project/CancerEvolution/Datasets/TCGA_WGS/elias_bam_BLCA/data/full/*.bam & /project/CancerEvolution/Datasets/TCGA_WGS/elias_bam_BLCA/data/test/*.bam
+TCGA-OV run from: /project/CancerEvolution/Datasets/TCGA_WGS/randiip/data/TCGA-OV/*.bam
+TCGA-GBM run from: /project/CancerEvolution/Datasets/TCGA_WGS/Chongming_10pjs/data/TCGA-GBM/*.bam
+TCGA-PAAD run from: /project/CancerEvolution/Datasets/TCGA_WGS/Chongming_10pjs/data/TCGA-PAAD/*.bam
+TCGA-PRAD run from: /project/CancerEvolution/Datasets/TCGA_WGS/Chongming_10pjs/data/TCGA-PRAD/*.bam
+
+
+## BEFORE RUNNING calc_rDNA_depth.sh (BOTH OF THEM) ##
+    - Create log folder in "logs"
+
+
+For multiple runs with GERM-LINE SAMPLES, run as:
+
+for bam in /home/diegoonez/CancerEvolution/Datasets/TCGA_WGS/randiip/data/TCGA_GermLine/TCGA-TGCT/*.bam; do
+    sample=$(basename "$bam" .bam)
+        
+    echo "Submitting: ${sample}"
+        
+    sbatch --job-name="TGCT_GL_${sample}" \
+        --open-mode=append \
+        -o logs/logs_TGCT_GL/${sample}.log \
+        -e logs/logs_TGCT_GL/${sample}.log \
+        scripts/calc_rDNA_depth_GL.sh "$bam" "TGCT_GL"
+    
+done
+
+
+For TEST RUN with TUMOR SAMPLES, run as:
+
+sbatch --job-name="TCGA_42_2582-01A" \
+    -o logs/logs_OV_TUMOR/TCGA-42-2582-01A.log \
+    -e logs/logs_OV_TUMOR/TCGA-42-2582-01A.log \
+    scripts/calc_rDNA_depth_TUMOR.sh \
+    "/home/diegoonez/CancerEvolution/Datasets/TCGA_WGS/randiip/data/TCGA_TUMOR/TCGA-OV/TCGA-42-2582-01A.bam" \
+    "OV_TUMOR" \
+    "scripts/ploidy_files/OV/OV_ploidy.tsv"
+
+
+For multiple runs WITH TUMOR SAMPLES, run as:
+
+for bam in /home/diegoonez/CancerEvolution/Datasets/TCGA_WGS/randiip/data/TCGA_TUMOR/TCGA-BRCA/*.bam; do
+    sample=$(basename "$bam" .bam)
+        
+    echo "Submitting: ${sample}"
+        
+    sbatch --job-name="BRCA_TUMOR_${sample}" \
+        --open-mode=append \
+        -o logs/logs_BRCA_TUMOR/${sample}.log \
+        -e logs/logs_BRCA_TUMOR/${sample}.log \
+        scripts/calc_rDNA_depth_TUMOR.sh "$bam" "BRCA_TUMOR" "scripts/ploidy_files/BRCA/BRCA_ploidy_proxy.tsv"
+    
+done
+
+
+PROMPT FOR RUNNING collect_rDNA_CN (from folder "Diego", and activate rdna_env):
+python scripts/collect_rDNA_CN.py \
+--folder output/BRCA_TUMOR
+--output output/summary_files/BRCA_TUMOR_rDNA_CN.tsv
+
+
+PROMPT FOR CHECKING "DONE" IN logs FOLDER:
+grep -r "DONE" logs/logs_BRCA_TUMOR | wc -l
+
+
+PROMPT FOR CLEANING output FOLDER FROM SAMPLES THAT HAVEN'T FINISHED (from folder "Diego", and activate rdna_env):
+for log in $(grep -L "DONE" logs/logs_BRCA_TUMOR/*.log); do
+    id=$(basename "$log" .log)
+    echo "Cleaning up intermediate files for: $id"
+    rm -f output/BRCA_TUMOR/"$id".rDNA_onRef.sorted.bam \
+          output/BRCA_TUMOR/"$id".rDNA_onRef.sorted.bam.bai \
+          output/BRCA_TUMOR/"$id".rDNA_slice.fastq
+done
+
+
